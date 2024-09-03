@@ -1,8 +1,8 @@
 {
   "assets": [
     {
-      "Name": "Gold",
-      "Monthly prices": {
+      "name": "Gold",
+      "monthly_prices": {
         "Farvardin": 5300,
         "Ordibehesht": 5800,
         "Khordad": 5950,
@@ -18,8 +18,8 @@
       }
     },
     {
-      "Name": "Silver",
-      "Monthly prices": {
+      "name": "Silver",
+      "monthly_prices": {
         "Farvardin": 910,
         "Ordibehesht": 850,
         "Khordad": 870,
@@ -35,8 +35,8 @@
       }
     },
     {
-      "Name": "Copper",
-      "Monthly prices": {
+      "name": "Copper",
+      "monthly_prices": {
         "Farvardin": 300,
         "Ordibehesht": 330,
         "Khordad": 350,
@@ -52,8 +52,8 @@
       }
     },
     {
-      "Name": "Oil",
-      "Monthly prices": {
+      "name": "Oil",
+      "monthly_prices": {
         "Farvardin": 210,
         "Ordibehesht": 210,
         "Khordad": 215,
@@ -69,8 +69,8 @@
       }
     },
     {
-      "Name": "Steel",
-      "Monthly prices": {
+      "name": "Steel",
+      "monthly_prices": {
         "Farvardin": 110,
         "Ordibehesht": 180,
         "Khordad": 190,

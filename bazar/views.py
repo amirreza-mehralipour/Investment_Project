@@ -1,6 +1,6 @@
-from .serializers import sandoghSerializer
+from .serializers import SandoghSerializer, AssetSerializer
 from .models import Sandogh, Asset
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.response import Response
@@ -15,8 +15,8 @@ class Refresh(TokenRefreshView):
 
 
 class CalculateProfitView(CreateAPIView):
-    serializer_class = sandoghSerializer
-    permission_class = [IsAuthenticated]
+    serializer_class = SandoghSerializer
+    permission_class = [AllowAny]
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -47,8 +47,6 @@ class CalculateProfitView(CreateAPIView):
 
         return Response({'results': results,
                          'max_profit' : max_profit})
-    def get_queryset(self):
-        return self.request.user
     
 
 def find_best_investment_period(request,name):
@@ -73,3 +71,7 @@ def find_best_investment_period(request,name):
         'best_end_month': best_end_month,
     })  
 
+class ListCreateAsset(ListCreateAPIView):
+    queryset = Asset.objects.all()
+    serializer_class = AssetSerializer
+    permission_classes = [IsAuthenticated]

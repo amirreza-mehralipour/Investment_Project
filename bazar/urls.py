@@ -7,4 +7,6 @@ urlpatterns = [
     path('find_best_investment_period/<str:name>/', views.find_best_investment_period, name='find_best_investment_period'),
     path('login/', Login.as_view()),
     path('refresh/', Refresh.as_view()),
+    path('asset/', ListCreateAsset.as_view()),
+    path('sandogh/', CalculateProfitView.as_view()),
 ]
