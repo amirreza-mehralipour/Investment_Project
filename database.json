@@ -1,0 +1,89 @@
+{
+  "assets": [
+    {
+      "Name": "Gold",
+      "Monthly prices": {
+        "Farvardin": 5300,
+        "Ordibehesht": 5800,
+        "Khordad": 5950,
+        "Tir": 5210,
+        "Mordad": 5680,
+        "Shahrivar": 5500,
+        "Mehr": 5300,
+        "Aban": 5800,
+        "Azar": 5750,
+        "Dey": 5910,
+        "Bahman": 6200,
+        "Esfand": 6350
+      }
+    },
+    {
+      "Name": "Silver",
+      "Monthly prices": {
+        "Farvardin": 910,
+        "Ordibehesht": 850,
+        "Khordad": 870,
+        "Tir": 880,
+        "Mordad": 880,
+        "Shahrivar": 910,
+        "Mehr": 925,
+        "Aban": 935,
+        "Azar": 910,
+        "Dey": 915,
+        "Bahman": 920,
+        "Esfand": 920
+      }
+    },
+    {
+      "Name": "Copper",
+      "Monthly prices": {
+        "Farvardin": 300,
+        "Ordibehesht": 330,
+        "Khordad": 350,
+        "Tir": 355,
+        "Mordad": 360,
+        "Shahrivar": 365,
+        "Mehr": 370,
+        "Aban": 380,
+        "Azar": 390,
+        "Dey": 450,
+        "Bahman": 550,
+        "Esfand": 700
+      }
+    },
+    {
+      "Name": "Oil",
+      "Monthly prices": {
+        "Farvardin": 210,
+        "Ordibehesht": 210,
+        "Khordad": 215,
+        "Tir": 215,
+        "Mordad": 225,
+        "Shahrivar": 200,
+        "Mehr": 195,
+        "Aban": 190,
+        "Azar": 170,
+        "Dey": 170,
+        "Bahman": 170,
+        "Esfand": 165
+      }
+    },
+    {
+      "Name": "Steel",
+      "Monthly prices": {
+        "Farvardin": 110,
+        "Ordibehesht": 180,
+        "Khordad": 190,
+        "Tir": 250,
+        "Mordad": 350,
+        "Shahrivar": 400,
+        "Mehr": 410,
+        "Aban": 400,
+        "Azar": 420,
+        "Dey": 430,
+        "Bahman": 430,
+        "Esfand": 450
+      }
+    }
+  ]
+}
