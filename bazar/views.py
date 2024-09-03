@@ -2,12 +2,21 @@ from .serializers import sandoghSerializer
 from .models import Sandogh, Asset
 from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.response import Response
 from django.http import JsonResponse
 
+class Login(TokenObtainPairView):
+    pass
+
+
+class Refresh(TokenRefreshView):
+    pass
+
+
 class CalculateProfitView(CreateAPIView):
     serializer_class = sandoghSerializer
-    permission_class = [AllowAny]
+    permission_class = [IsAuthenticated]
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -38,6 +47,8 @@ class CalculateProfitView(CreateAPIView):
 
         return Response({'results': results,
                          'max_profit' : max_profit})
+    def get_queryset(self):
+        return self.request.user
     
 
 def find_best_investment_period(request,name):
