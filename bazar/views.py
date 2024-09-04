@@ -1,13 +1,22 @@
-from .serializers import sandoghSerializer
+from .serializers import SandoghSerializer, AssetSerializer
 from .models import Sandogh, Asset
-from rest_framework.generics import CreateAPIView
+from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.response import Response
 from django.http import JsonResponse
 from django.views import View
 
+class Login(TokenObtainPairView):
+    pass
+
+
+class Refresh(TokenRefreshView):
+    pass
+
+
 class CalculateProfitView(CreateAPIView):
-    serializer_class = sandoghSerializer
+    serializer_class = SandoghSerializer
     permission_class = [AllowAny]
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -73,3 +82,9 @@ class FindBestInvestmentPeriodView(View):
             'best_start_month': best_start_month,
             'best_end_month': best_end_month,
         })
+
+class ListCreateAsset(ListCreateAPIView):
+    queryset = Asset.objects.all()
+    serializer_class = AssetSerializer
+    permission_classes = [IsAuthenticated]
+
