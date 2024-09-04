@@ -4,6 +4,7 @@ from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework.response import Response
 from django.http import JsonResponse
+from django.views import View
 
 class CalculateProfitView(CreateAPIView):
     serializer_class = sandoghSerializer
@@ -40,25 +41,35 @@ class CalculateProfitView(CreateAPIView):
                          'max_profit' : max_profit})
     
 
-def find_best_investment_period(request,name):
-    best_profit = 0
-    obj = Asset.objects.get(name=name)
-    prices = obj.monthly_prices
-    mounth_list = list(prices.keys())
-    for start in range(len(mounth_list)):
-        for end in range(start+1, len(mounth_list)):
-            start_price = prices.get(mounth_list[start])
-            end_price = prices.get(mounth_list[end])
-            if start_price and end_price:
-                profit = ((end_price - start_price) / start_price) * 100
-                if profit > best_profit:
-                    best_profit = profit
-                    best_start_month = mounth_list[start]
-                    best_end_month = mounth_list[end]
-    return JsonResponse({
-        'name': name,
-        'best_profit': best_profit,
-        'best_start_month': best_start_month,
-        'best_end_month': best_end_month,
-    })  
+class FindBestInvestmentPeriodView(View):
+    def get(self, request, name):
+        best_profit = 0
+        best_start_month = ''
+        best_end_month = ''
+        
+        try:
+            obj = Asset.objects.get(name=name)
+        except Asset.DoesNotExist:
+            return JsonResponse({'error': 'Asset not found'}, status=404)
 
+        prices = obj.monthly_prices
+        month_list = list(prices.keys())
+        
+        for start in range(len(month_list)):
+            for end in range(start + 1, len(month_list)):
+                start_price = prices.get(month_list[start])
+                end_price = prices.get(month_list[end])
+                
+                if start_price and end_price:
+                    profit = ((end_price - start_price) / start_price) * 100
+                    if profit > best_profit:
+                        best_profit = profit
+                        best_start_month = month_list[start]
+                        best_end_month = month_list[end]
+        
+        return JsonResponse({
+            'name': name,
+            'best_profit': best_profit,
+            'best_start_month': best_start_month,
+            'best_end_month': best_end_month,
+        })
