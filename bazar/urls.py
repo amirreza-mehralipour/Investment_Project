@@ -9,5 +9,5 @@ urlpatterns = [
     path('refresh/', Refresh.as_view()),
     path('asset/', ListCreateAsset.as_view()),
     path('sandogh/', ListCreateSandogh.as_view()),
-    path('history/', ProfitCalculationHistory.as_view()),
+    path('history/', ProfitCalculationHistoryView.as_view()),
     ]
