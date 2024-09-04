@@ -2,7 +2,6 @@ from django.db import models
 from django.contrib.auth.models import User
 
 class Asset(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=100)
     monthly_prices = models.JSONField()
 
@@ -24,6 +23,7 @@ class Sandogh(models.Model):
         ('Bahman', 'Bahman'),
         ('Esfand', 'Esfand'),
     ]
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
     initial_amount = models.FloatField()
     start_month = models.CharField(max_length=20, choices=MONTH_CHOICES)
     end_month = models.CharField(max_length=20, choices=MONTH_CHOICES)
