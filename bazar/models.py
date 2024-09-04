@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 class Asset(models.Model):
     name = models.CharField(max_length=100)
     monthly_prices = models.JSONField()
-    owners = models.ManyToManyField(User, related_name='assets')
 
     def __str__(self):
         return self.name
@@ -27,3 +26,5 @@ class Sandogh(models.Model):
     initial_amount = models.FloatField()
     start_month = models.CharField(max_length=20, choices=MONTH_CHOICES)
     end_month = models.CharField(max_length=20, choices=MONTH_CHOICES)
+    assets = models.ManyToManyField(Asset, related_name='sandoghs')
+
