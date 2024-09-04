@@ -8,4 +8,6 @@ urlpatterns = [
     path('login/', Login.as_view()),
     path('refresh/', Refresh.as_view()),
     path('asset/', ListCreateAsset.as_view()),
-    path('sandogh/', CalculateProfitView.as_view()),]
+    path('sandogh/', ListCreateSandogh.as_view()),
+    path('history/', ProfitCalculationHistory.as_view()),
+    ]

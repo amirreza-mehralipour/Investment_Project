@@ -1,5 +1,5 @@
 from rest_framework.serializers import ModelSerializer
-from .models import Sandogh, Asset
+from .models import Sandogh, Asset, ProfitCalculationHistory
 
 class SandoghSerializer(ModelSerializer):
     class Meta:
@@ -11,3 +11,8 @@ class AssetSerializer(ModelSerializer):
         model = Asset
         fields = '__all__'
 
+
+class ProfitCalculationHistorySerializer(ModelSerializer):
+    class Meta:
+        model = ProfitCalculationHistory
+        fields = '__all__'

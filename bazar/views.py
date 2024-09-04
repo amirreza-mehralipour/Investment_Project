@@ -1,6 +1,6 @@
-from .serializers import SandoghSerializer, AssetSerializer
-from .models import Sandogh, Asset
-from rest_framework.generics import CreateAPIView, ListCreateAPIView, RetrieveUpdateDestroyAPIView
+from .serializers import SandoghSerializer, AssetSerializer, ProfitCalculationHistorySerializer
+from .models import Sandogh, Asset, ProfitCalculationHistory
+from rest_framework.generics import CreateAPIView, ListCreateAPIView, ListAPIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from rest_framework.response import Response
@@ -17,37 +17,51 @@ class Refresh(TokenRefreshView):
 
 class CalculateProfitView(CreateAPIView):
     serializer_class = SandoghSerializer
-    permission_class = [AllowAny]
-    def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
+    permission_classes = [IsAuthenticated]
 
-        initial_amount = serializer.validated_data['initial_amount']
-        start_month = serializer.validated_data['start_month']
-        end_month = serializer.validated_data['end_month']
+    def create(self, request, *args, **kwargs):
+        sandogh = Sandogh.objects.filter(user=request.user).first()
+
+        if not sandogh:
+            return Response({"error": "This user does not have any sandogh"}, status=400)
+
+        initial_amount = sandogh.initial_amount
+        start_month = sandogh.start_month
+        end_month = sandogh.end_month
 
         results = []
 
-        for asset in Asset.objects.all():
-            current_assest = asset.name
+        for asset in sandogh.assets.all():
+            current_asset = asset.name
             prices = asset.monthly_prices
 
             start_price = prices.get(start_month)
             end_price = prices.get(end_month)
 
-            if start_price and end_price :
+            if start_price and end_price:
                 profit = ((end_price - start_price) / start_price) * 100
                 final_amount = initial_amount * (1 + profit / 100)
 
                 results.append({
-                    'assest': current_assest,
+                    'asset': current_asset,
                     'profit_percentage': profit,
                     'final_amount': final_amount,
                 })
-                max_profit = max(results, key=lambda x: x['profit_percentage'])
 
-        return Response({'results': results,
-                         'max_profit' : max_profit})
+        if results:
+            max_profit = max(results, key=lambda x: x['profit_percentage'])
+
+            ProfitCalculationHistory.objects.create(
+                user=request.user,
+                initial_amount=initial_amount,
+                start_month=start_month,
+                end_month=end_month,
+                results=results
+            )
+
+            return Response({'results': results, 'max_profit': max_profit})
+        else:
+            return Response({"error": "There is no data to calculate"}, status=400)
     
 
 class FindBestInvestmentPeriodView(View):
@@ -78,7 +92,7 @@ class FindBestInvestmentPeriodView(View):
         
         return JsonResponse({
             'name': name,
-            'best_profit': best_profit,
+            'best_profit': f'{best_profit}%',
             'best_start_month': best_start_month,
             'best_end_month': best_end_month,
         })
@@ -88,3 +102,18 @@ class ListCreateAsset(ListCreateAPIView):
     serializer_class = AssetSerializer
     permission_classes = [IsAuthenticated]
 
+class ListCreateSandogh(ListCreateAPIView):
+    queryset = Sandogh.objects.all()
+    serializer_class = SandoghSerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return Sandogh.objects.filter(user = self.request.user)
+    
+
+class ProfitCalculationHistoryView(ListAPIView):
+    serializer_class = ProfitCalculationHistorySerializer
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        return ProfitCalculationHistory.objects.filter(user=self.request.user)
